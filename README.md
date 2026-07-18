@@ -8,9 +8,13 @@ A mission fuel planner for DCS World. Build a mission as an airframe plus an ord
 
 Mission design (and mission *briefing*) needs a real fuel plan: how much gas to load, whether an AAR is required, and whether the mission is even flyable on internal fuel alone. This tool builds that plan leg-by-leg instead of guessing a round number and hoping.
 
-## Architecture
 
-![C4 Container Diagram](https://app.yuml.me/david-fry/untitled-diagram-1.svg)
+<!-- ## Documentation
+- [Architecture (C4)](docs/architecture/c4-context.md)
+- [Entity Diagram](docs/data/entity-diagram.md)
+- [Dev Environment Setup (SSH)](docs/setup/ssh-setup.md)## Architecture -->
+
+![C4 Container Diagram](docs/architecture/c4-context.png)
 
 The app is a client-side SPA with no backend. Mission plans autosave to browser storage and can be exported/imported as portable JSON files for sharing.
 
