@@ -1,0 +1,30 @@
+@heading DCS Fuel Planner - Container Diagram
+@caption How the mission designer plans fuel across legs, validated against airframe capability
+@legend true
+
+[Mission Designer|Person|Builds the DCS mission fuel plan]
+
+{Fuel Planner
+[Fuel Planner SPA|Container|Airframe selector, leg builder, mission timeline, results dashboard :browser:]
+[Fuel Calculation Engine|Container|Applies each leg's fuel strategy and computes cumulative burn]
+[Validation Engine|Container|Runs pluggable rules: Bingo, AAR placement, leg sequence, capability]
+[Leg Library|Container|Predefined legs tagged with required airframe capabilities :database:]
+[Airframe Profiles|Container|Fuel flow rates, capacity, bingo/joker thresholds per airframe :database:]
+[Persistence Layer|Container|Coordinates autosave and export/import]
+}
+
+[Browser Storage|Container|localStorage/IndexedDB autosave cache :database:]
+[JSON Mission Files|Container|Portable, shareable mission export files]
+[DCS Mission Editor|External|Manual cross-reference with DCS mission, no direct integration]
+
+[Mission Designer]-Builds mission in->[Fuel Planner SPA]
+[Fuel Planner SPA]-Sends leg sequence->[Fuel Calculation Engine]
+[Fuel Calculation Engine]-Reads flow rates & thresholds->[Airframe Profiles]
+[Fuel Calculation Engine]-Passes fuel state array->[Validation Engine]
+[Fuel Planner SPA]-Pulls legs filtered by capability->[Leg Library]
+[Fuel Planner SPA]-Autosave / load->[Persistence Layer]
+[Persistence Layer]-Writes and reads-.->[Browser Storage]
+[Persistence Layer]-Export / import-.->[JSON Mission Files]
+[Mission Designer]-Shares file with-.->[JSON Mission Files]
+[Mission Designer]-Cross references geometry-.->[DCS Mission Editor]
+
