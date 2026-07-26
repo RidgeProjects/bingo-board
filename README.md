@@ -8,7 +8,6 @@ A mission fuel planner for DCS World. Build a mission as an airframe plus an ord
 
 Mission design (and mission *briefing*) needs a real fuel plan: how much gas to load, whether an AAR is required, and whether the mission is even flyable on internal fuel alone. This tool builds that plan leg-by-leg instead of guessing a round number and hoping.
 
-
 <!-- ## Documentation
 - [Architecture (C4)](docs/architecture/c4-context.md)
 - [Entity Diagram](docs/data/entity-diagram.md)
@@ -19,6 +18,7 @@ Mission design (and mission *briefing*) needs a real fuel plan: how much gas to 
 The app is a client-side SPA with no backend. Mission plans autosave to browser storage and can be exported/imported as portable JSON files for sharing.
 
 **Core containers**
+
 - **Fuel Planner SPA** — airframe selector, leg builder, mission timeline, results dashboard
 - **Fuel Calculation Engine** — applies each leg's fuel strategy (fixed or computed) and produces a cumulative fuel state array
 - **Validation Engine** — runs pluggable rules (bingo threshold, AAR placement, leg sequencing, airframe capability) against the fuel state array
@@ -52,12 +52,17 @@ Legs are **airframe-agnostic but capability-gated** — an F/A-18C can fly a Cas
 ## Validation
 
 Mission validation runs in two passes:
+
 1. **Fuel state pass** — walk the ordered legs, compute cumulative fuel remaining after each one
 2. **Rules pass** — pluggable rules check that state array for problems (fuel below bingo before a recovery leg, missing AAR leg on a fuel-short mission, invalid leg ordering, capability mismatches)
 
 ## Status
 
 Early architecture / design phase — domain model and C4 diagrams above, implementation in progress.
+
+## Documentation
+
+- [Fuel calculation engine](./docs/design/fuel-calculation-engine-design.md)
 
 ## Roadmap
 
