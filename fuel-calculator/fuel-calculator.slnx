@@ -1,2 +1,5 @@
 <Solution>
+  <Project Path="FuelCalculator.Console/FuelCalculator.Console.csproj" />
+  <Project Path="FuelCalculator.Tests/FuelCalculator.Tests.csproj" />
+  <Project Path="FuelCalculator/FuelCalculator.csproj" />
 </Solution>
