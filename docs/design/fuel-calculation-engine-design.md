@@ -21,8 +21,8 @@ Given a Mission (an Airframe plus an ordered sequence of Legs), calculate the fu
 
 | Input | Description |
 |---|---|
-| **Airframe** | Fuel capacity, fuel flow rates by phase, capability list |
-| **Ordered Leg sequence** | The mission's legs in flight order, each carrying its fuel strategy and parameters |
+| **Airframe** | Fuel capacity and fuel flow rates by phase. Capability list is not needed here — capability filtering/validation happens upstream (Leg Library, Validation Engine), not during fuel calculation. |
+| **Ordered Leg sequence** | The mission's legs in flight order, each carrying its fuel strategy and parameters. This is the *whole collection*, passed in one call — the engine iterates internally and returns per-leg deltas plus the cumulative timeline. It does not calculate leg-by-leg on request from outside. |
 | **Starting fuel** | The fuel load at engine start — may be full capacity or a partial/user-specified load |
 
 ## Outputs
@@ -33,6 +33,13 @@ Given a Mission (an Airframe plus an ordered sequence of Legs), calculate the fu
 | **Per-leg fuel delta** | How much fuel each individual leg consumed or added |
 | **Total fuel required** | Sum of all consumption across the mission (ignoring any AAR gains), i.e. what you'd need with no tanking |
 | **Fuel remaining at recovery** | The final value in the fuel timeline — what's left when the mission ends |
+
+## Responsibility Boundary
+
+- **Legs don't call the engine.** A Leg is a data holder — it carries its fuel strategy and parameters, but has no dependency on the Fuel Calculation Engine. If Legs called the engine themselves, you'd get a circular dependency (the engine consumes Legs; Legs can't also depend on the engine).
+- **The Mission hands the whole Leg collection to the engine in one call.** Not leg-by-leg, not recursively — the engine receives the entire ordered sequence at once, iterates over it internally, and returns the complete result (per-leg deltas plus the cumulative fuel timeline) in one pass.
+- **Call shape:** App → Mission (Airframe + ordered Legs) → Fuel Calculation Engine (one call, whole collection in) → Fuel Timeline (whole result out). Nothing outside the engine loops back into it mid-sequence.
+- **Capability checks are not this component's job.** Whether an airframe is allowed to fly a given leg (e.g. carrier ops, refuelling type) is resolved before legs reach this engine — by the Leg Library (filtering) and the Validation Engine (capability rule). This component assumes it has already been handed a legal sequence and focuses purely on the arithmetic.
 
 ## Business Rules
 
