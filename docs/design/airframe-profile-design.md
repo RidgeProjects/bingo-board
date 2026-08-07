@@ -35,6 +35,7 @@ An Airframe Profile must define:
 - **Units** — are fuel values expressed in absolute weight (lbs/kg) or percentage of capacity? This affects every other component that reads these numbers, so it should be settled once, here, rather than per-consumer.
 - **Flow rate precision** — is one flow rate per phase sufficient, or do some airframes need finer distinction (e.g. military power vs afterburner within "combat" phase)?
 - **Multiple loadout variants** — does a single airframe type need more than one profile depending on stores/configuration (e.g. clean vs loaded F/A-18C having different flow rates), or is that out of scope for now?
+- **External fuel tanks** — not modelled. Internal capacity (`AirframeProfile.CapacityLbs`) reflects airframe-fixed internal fuel only. External tank capacity, drag/flow-rate impact, and jettison behaviour are mission/loadout-specific and need their own design once the loadout-variant question above is resolved.
 
 ## Dependencies
 
