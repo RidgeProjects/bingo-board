@@ -80,6 +80,6 @@ These are open questions for product decision, not yet answered by this spec:
 ## Dependencies
 
 - Requires a finalized **Airframe Profile** structure (capacity, per-phase flow rates) before fuel-flow lookups can be defined precisely.
-[Airframe Profile Design](./docs/design/airframe-profile-design.md)
+[Airframe Profile Design](./airframe-profile-design.md)
 - Requires each **Leg** to expose enough data to identify its strategy (Fixed vs Computed) and the relevant parameters — this engine consumes that data but doesn't define the Leg schema itself.
-[Leg Design](./docs/design/leg-design.md)
+[Leg Design](./leg-design.md)
