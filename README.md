@@ -62,6 +62,8 @@ Early architecture / design phase — domain model and C4 diagrams above, implem
 
 ## Documentation
 
+- [Airframe Profile Design](./docs/design/airframe-profile-design.md)
+- [Leg Design](./docs/design/leg-design.md)
 - [Fuel calculation engine](./docs/design/fuel-calculation-engine-design.md)
 
 ## Roadmap
