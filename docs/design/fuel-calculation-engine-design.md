@@ -7,12 +7,14 @@ Given a Mission (an Airframe plus an ordered sequence of Legs), calculate the fu
 ## Scope
 
 **In scope**
+
 - Calculating fuel burned per leg
 - Calculating fuel gained per leg (aerial refuelling)
 - Producing a cumulative fuel timeline across the whole mission
 - Reporting total mission fuel required
 
 **Out of scope**
+
 - Judging whether the mission is flyable (Validation Engine)
 - Selecting which legs are available for an airframe (Leg Library's job, upstream of this)
 - Persisting or displaying results (Persistence Layer / SPA)
@@ -20,7 +22,7 @@ Given a Mission (an Airframe plus an ordered sequence of Legs), calculate the fu
 ## Inputs
 
 | Input | Description |
-|---|---|
+| --- | --- |
 | **Airframe** | Fuel capacity and fuel flow rates by phase. Capability list is not needed here — capability filtering/validation happens upstream (Leg Library, Validation Engine), not during fuel calculation. |
 | **Ordered Leg sequence** | The mission's legs in flight order, each carrying its fuel strategy and parameters. This is the *whole collection*, passed in one call — the engine iterates internally and returns per-leg deltas plus the cumulative timeline. It does not calculate leg-by-leg on request from outside. |
 | **Starting fuel** | The fuel load at engine start — may be full capacity or a partial/user-specified load |
@@ -28,7 +30,7 @@ Given a Mission (an Airframe plus an ordered sequence of Legs), calculate the fu
 ## Outputs
 
 | Output | Description |
-|---|---|
+| --- | --- |
 | **Fuel timeline** | Fuel remaining at each point in the sequence: before leg 1, after leg 1, after leg 2, ... after the final leg |
 | **Per-leg fuel delta** | How much fuel each individual leg consumed or added |
 | **Total fuel required** | Sum of all consumption across the mission (ignoring any AAR gains), i.e. what you'd need with no tanking |
@@ -78,4 +80,6 @@ These are open questions for product decision, not yet answered by this spec:
 ## Dependencies
 
 - Requires a finalized **Airframe Profile** structure (capacity, per-phase flow rates) before fuel-flow lookups can be defined precisely.
+[Airframe Profile Design](./docs/design/airframe-profile-design.md)
 - Requires each **Leg** to expose enough data to identify its strategy (Fixed vs Computed) and the relevant parameters — this engine consumes that data but doesn't define the Leg schema itself.
+[Leg Design](./docs/design/leg-design.md)
