@@ -17,18 +17,6 @@ public class AirframeTest
 {
     public class AirframeProfileTests
     {
-        [Fact]
-        public void Constructor_Throws_When_CapacityIsZero()
-        {
-            Assert.Throws<ArgumentException>(() => new AirframeProfile(AirframeType.F18, capacityLbs: 0, flowRates: new(), capabilities: ValidCapabilities()));
-        }
-
-        [Fact]
-        public void Constructor_Throws_When_CapacityIsNegative()
-        {
-            Assert.Throws<ArgumentException>(() => new AirframeProfile(AirframeType.F18, capacityLbs: -100, flowRates: new(), capabilities: ValidCapabilities()));
-        }
-
         [Theory]
         [InlineData(0)]
         [InlineData(-100)]
@@ -82,6 +70,39 @@ public class AirframeTest
             var caps = new List<Capability> { Capability.CarrierOperations, Capability.ProbeRefuelling };
             var profile = new AirframeProfile(AirframeType.F18, 10500, CompleteFlowRates(), caps);
             Assert.Equal(caps, profile.Capabilities);
+        }
+
+        [Fact]
+        public void Equality_Is_ShallowForCollectionMembers()
+        {
+            var a = new AirframeProfile(AirframeType.F18, 10500, CompleteFlowRates(), new List<Capability>());
+            var b = new AirframeProfile(AirframeType.F18, 10500, CompleteFlowRates(), new List<Capability>());
+
+            // Documents known record equality behavior: FlowRates/Capabilities compare by reference,
+            // not contents, so otherwise-identical profiles are NOT equal.
+            Assert.NotEqual(a, b);
+        }
+
+        [Fact]
+        public void FlowRates_Is_DefensivelyCopied_NotSharedWithCaller()
+        {
+            var flowRates = CompleteFlowRates();
+            var profile = new AirframeProfile(AirframeType.F18, 10500, flowRates, new List<Capability>());
+
+            flowRates[FlightPhase.Cruise] = 999999;
+
+            Assert.NotEqual(999999, profile.FlowRates[FlightPhase.Cruise]);
+        }
+
+        [Fact]
+        public void Capabilities_Is_DefensivelyCopied_NotSharedWithCaller()
+        {
+            var capabilities = new List<Capability> { Capability.ProbeRefuelling, Capability.CarrierOperations };
+            var profile = new AirframeProfile(AirframeType.F18, 10500, CompleteFlowRates(), capabilities);
+
+            capabilities.Add(Capability.BoomRefuelling);
+
+            Assert.DoesNotContain(Capability.BoomRefuelling, profile.Capabilities);
         }
 
         private static Dictionary<FlightPhase, double> CompleteFlowRates() =>

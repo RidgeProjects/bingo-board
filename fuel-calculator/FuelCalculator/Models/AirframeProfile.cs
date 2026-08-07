@@ -1,4 +1,4 @@
-public class AirframeProfile : IAirframe
+public record AirframeProfile : IAirframe
 {
     public AirframeType Identity { get; }
     public double CapacityLbs { get; }
@@ -31,7 +31,7 @@ public class AirframeProfile : IAirframe
 
         Identity = identity;
         CapacityLbs = capacityLbs;
-        FlowRates = flowRates;
-        Capabilities = capabilities;
+        FlowRates = new Dictionary<FlightPhase, double>(flowRates);
+        Capabilities = [.. capabilities];
     }
 }
