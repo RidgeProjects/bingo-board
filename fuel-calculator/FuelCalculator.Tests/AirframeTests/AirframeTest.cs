@@ -29,14 +29,12 @@ public class AirframeTest
             Assert.Throws<ArgumentException>(() => new AirframeProfile(AirframeType.F18, capacityLbs: -100, flowRates: new(), capabilities: ValidCapabilities()));
         }
 
-        // Rule 1: capacity must be positive
         [Theory]
         [InlineData(0)]
         [InlineData(-100)]
         public void Constructor_Throws_When_CapacityIsNotPositive(double invalidCapacity)
         {
-            Assert.Throws<ArgumentException>(() =>
-                new AirframeProfile(AirframeType.F18, invalidCapacity, CompleteFlowRates(), new List<Capability>()));
+            Assert.Throws<ArgumentException>(() => new AirframeProfile(AirframeType.F18, invalidCapacity, CompleteFlowRates(), new List<Capability>()));
         }
 
         [Fact]
@@ -53,8 +51,7 @@ public class AirframeTest
             var incomplete = CompleteFlowRates();
             incomplete.Remove(FlightPhase.Loiter);
 
-            var ex = Assert.Throws<ArgumentException>(() =>
-                new AirframeProfile(AirframeType.F18, 10500, incomplete, new List<Capability>()));
+            var ex = Assert.Throws<ArgumentException>(() => new AirframeProfile(AirframeType.F18, 10500, incomplete, new List<Capability>()));
 
             Assert.Contains("Loiter", ex.Message);
         }
@@ -62,16 +59,14 @@ public class AirframeTest
         [Fact]
         public void Constructor_Throws_When_FlowRatesIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-                new AirframeProfile(AirframeType.F18, 10500, null, new List<Capability>()));
+            Assert.Throws<ArgumentNullException>(() => new AirframeProfile(AirframeType.F18, 10500, null, new List<Capability>()));
         }
 
         // Rule 3: capability list must be explicit (not null), empty is fine
         [Fact]
         public void Constructor_Throws_When_CapabilitiesIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-                new AirframeProfile(AirframeType.F18, 10500, CompleteFlowRates(), null));
+            Assert.Throws<ArgumentNullException>(() => new AirframeProfile(AirframeType.F18, 10500, CompleteFlowRates(), null));
         }
 
         [Fact]
@@ -105,14 +100,6 @@ public class AirframeTest
             {
                 Capability.ProbeRefuelling,
                 Capability.CarrierOperations
-            };
-
-        private Dictionary<FlightPhase, double> ValidFlowRates() =>
-            new Dictionary<FlightPhase, double>
-            {
-                { FlightPhase.Taxi, 400 },
-                { FlightPhase.Climb, 3000 }
-                // missing Cruise, Tactical, Loiter, Descent
             };
     }
 }
