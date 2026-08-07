@@ -39,6 +39,7 @@ A Mission must define:
 - **"Complete" vs "draft" state** — is there a formal distinction between a mission that's just a work-in-progress and one that's finished/exportable, or is "zero validation errors" the only signal of completeness? Affects whether Mission needs a status field at all.
 - **Repeated leg types** — is a mission allowed to contain more than one leg of the same type (e.g. two separate AAR legs)? Assumed yes, but worth confirming explicitly since it affects how the Leg Library / builder UI treats "already used" legs.
 - **Mission versioning** — does the system need to retain edit history, or is a Mission just current-state, fully overwritten on each save?
+- **External fuel tanks** — not modelled. Internal capacity (`AirframeProfile.CapacityLbs`) reflects airframe-fixed internal fuel only. External tank capacity, drag/flow-rate impact, and jettison behaviour are mission/loadout-specific and need their own design once the loadout-variant question above is resolved.
 
 ## Dependencies
 
